@@ -1,0 +1,189 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #f2f2f2;
+}
+
+header {
+    background: linear-gradient(135deg, #ff5f6d, #845ec2);
+    color: white;
+    text-align: center;
+    padding: 2em 1em;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease-in-out;
+}
+
+header img {
+    width: 250px;
+    max-width: 100%;
+    margin-bottom: 5px;
+    transition: transform 0.3s ease;
+}
+
+header img:hover {
+    transform: scale(1.08);
+}
+
+header h1 {
+    font-size: 2.8em;
+    margin-top: 0.3em;
+    margin-bottom: 0.4em;
+}
+
+h2 {
+    text-align: center;
+    margin-top: 2em;
+}
+
+.user-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1em;
+    padding: 1em;
+}
+.user-card {
+    width: 180px; /* Nouvelle largeur, avant c'était dynamique */
+    padding: 1em;
+    margin: 0.5em;
+}
+
+.user-card {
+    background: white;
+    border-radius: 12px;
+    text-align: center;
+    padding: 1em;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.user-card:hover {
+    transform: translateY(-5px);
+    background-color: #f9f2ff;
+    box-shadow: 0 10px 18px rgba(132, 94, 194, 0.5);
+}
+
+.user-card.offline {
+    filter: grayscale(90%);
+    opacity: 0.75;
+}
+
+.user-card img {
+    width: 100%;
+    height: auto;
+    max-height: 120px; /* pour éviter les images trop grandes */
+    object-fit: cover;
+}
+
+
+.user-card a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.username {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #e74c3c;
+    margin: 0.5em 0 0.2em;
+    line-height: 1.2em;
+}
+
+.title {
+    font-size: 0.9em;
+    color: #444;
+    margin-top: 0.5em;
+    line-height: 1.4em;
+    text-align: center;
+}
+
+.title em {
+    font-style: italic;
+    color: #666;
+}
+
+.title strong {
+    color: #000;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    margin-top: 0.5em;
+}
+
+.about-button,
+.event-button {
+    display: inline-block;
+    background: #e74c3c;
+    color: white;
+    padding: 0.8em 1.2em;
+    border-radius: 10px;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s, transform 0.3s;
+}
+
+.about-button:hover,
+.event-button:hover {
+    background: #845ec2;
+    transform: scale(1.05);
+}
+
+.button-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1em;
+}
+
+.button-container.single-button {
+    justify-content: center;
+}
+
+.button-container.single-button a {
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+}
+
+.interview-button {
+    display: inline-block;
+    background: #ff7f50;
+    color: white;
+    padding: 0.8em 1.2em;
+    border-radius: 10px;
+    font-weight: bold;
+    text-decoration: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s, transform 0.3s;
+}
+
+.interview-button:hover {
+    background: #ff5722;
+    transform: scale(1.05);
+}
+.user-card.vip::before {
+    content: "⭐ VIP";
+    font-weight: bold;
+    color: goldenrod;
+    font-size: 0.9em;
+    display: block;
+    margin-bottom: 0.3em;
+}
+a[href="vip.html"] {
+    background: #f1c40f; /* Jaune doré */
+    color: black;
+}
+a[href="vip.html"]:hover {
+    background: #d4ac0d;
+    transform: scale(1.05);
+}
+

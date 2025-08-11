@@ -1,0 +1,32 @@
+<script>
+  const password = prompt("Mot de passe admin ?");
+  if (password !== "tonSuperMotDePasse") {
+    alert("Accès refusé !");
+    window.location.href = "/";
+  }
+</script>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>🛠️ Admin - New Family</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>🛠️ Panneau d’administration - New Family</h1>
+  </header>
+
+  <main style="max-width: 600px; margin: auto; padding: 1rem;">
+    <label for="user">Ajouter un membre Twitch :</label><br>
+    <input type="text" id="user" placeholder="Ex: red_shadow_31" />
+    <button onclick="addUser()">➕ Ajouter</button>
+
+    <h2>Liste actuelle :</h2>
+    <ul id="userList"></ul>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>

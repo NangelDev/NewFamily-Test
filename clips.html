@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Clips à la une</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        #clip-frame {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 2em auto;
+        }
+
+        iframe {
+            width: 720px;
+            height: 405px;
+            max-width: 90%;
+            border: none;
+        }
+
+        #clip-user {
+            font-size: 1.2em;
+            margin: 0.5em 0;
+            font-weight: bold;
+        }
+
+        #next-button {
+            padding: 0.7em 1.5em;
+            font-size: 1em;
+            background-color: #9146FF;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 1em;
+        }
+
+        #next-button:hover {
+            background-color: #772ce8;
+        }
+
+        .button-container {
+            margin-top: 1em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="assets/logo.png" alt="Logo">
+        <h1>🎬 Clip à la une</h1>
+        <div class="button-container">
+            <a href="index.html" class="about-button">🏠 Retour à l'accueil</a>
+        </div>
+    </header>
+
+    <section id="clip-frame">
+        <iframe id="clip-player" src="" allowfullscreen></iframe>
+        <div id="clip-user"></div>
+        <button id="next-button">🎞️ Clip suivant</button>
+    </section>
+
+    <script src="clips.js"></script>
+</body>
+</html>
