@@ -2,8 +2,8 @@ let clientId = "";
 let accessToken = "";
 let clipsQueue = [];
 
-// Mets ton domaine Netlify exact ici
-const PARENT_DOMAIN = "newfamily.netlify.app";
+// Mets ici le domaine Netlify exact utilisé pour tester
+const PARENT_DOMAIN = "newfamily-test.netlify.app";
 
 const members = [
   "Nexou31",
@@ -120,6 +120,11 @@ document.addEventListener("DOMContentLoaded", () => {
 // === Initialisation ===
 (async () => {
   await getToken();
+  if (!accessToken || !clientId) {
+    document.getElementById("clip-user").textContent =
+      "Erreur d’authentification Twitch. Réessaie plus tard.";
+    return;
+  }
   await prepareClips();
   displayNextClip();
 })();
