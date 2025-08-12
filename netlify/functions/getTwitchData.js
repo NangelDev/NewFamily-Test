@@ -17,16 +17,23 @@ exports.handler = async function (event, context) {
         { method: "POST" }
       );
       const tokenData = await tokenResponse.json();
+
+      if (!tokenData.access_token) {
+        throw new Error("Impossible d'obtenir un token Twitch");
+      }
+
       cachedToken = tokenData.access_token;
       tokenExpiry = now + tokenData.expires_in * 1000;
     }
 
-    // Retourne uniquement le token, pas les streams
+    // Retourne le token ET le client_id utilisé
     return {
       statusCode: 200,
-      body: JSON.stringify({ access_token: cachedToken }),
+      body: JSON.stringify({
+        access_token: cachedToken,
+        client_id: client_id,
+      }),
     };
-
   } catch (err) {
     return {
       statusCode: 500,
@@ -34,4 +41,3 @@ exports.handler = async function (event, context) {
     };
   }
 };
-
