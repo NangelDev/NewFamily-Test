@@ -1,0 +1,23 @@
+{
+  "name": "newfamily-test",
+  "version": "1.0.0",
+  "description": "",
+  "main": "admin.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NangelDev/NewFamily-Test.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NangelDev/NewFamily-Test/issues"
+  },
+  "homepage": "https://github.com/NangelDev/NewFamily-Test#readme",
+  "dependencies": {
+    "node-fetch": "^2.7.0"
+  }
+}
