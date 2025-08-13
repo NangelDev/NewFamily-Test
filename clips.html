@@ -1,66 +1,72 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Clips à la une</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
     <style>
-        #clip-frame {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 2em auto;
-        }
+      #clip-frame {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 2em auto;
+      }
 
-        iframe {
-            width: 720px;
-            height: 405px;
-            max-width: 90%;
-            border: none;
-        }
+      iframe {
+        width: 720px;
+        height: 405px;
+        max-width: 90%;
+        border: none;
+      }
 
-        #clip-user {
-            font-size: 1.2em;
-            margin: 0.5em 0;
-            font-weight: bold;
-        }
+      #clip-user {
+        font-size: 1.2em;
+        margin: 0.5em 0;
+        font-weight: bold;
+      }
 
-        #next-button {
-            padding: 0.7em 1.5em;
-            font-size: 1em;
-            background-color: #9146FF;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            margin-top: 1em;
-        }
+      /* Style commun pour les deux boutons */
+      #next-button,
+      #prev-button {
+        padding: 0.7em 1.5em;
+        font-size: 1em;
+        background-color: #9146ff;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        margin: 0 0.5em; /* espace horizontal entre les boutons */
+      }
 
-        #next-button:hover {
-            background-color: #772ce8;
-        }
+      #next-button:hover,
+      #prev-button:hover {
+        background-color: #772ce8;
+      }
 
-        .button-container {
-            margin-top: 1em;
-            text-align: center;
-        }
+      .button-container {
+        margin-top: 1em;
+        text-align: center;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <header>
-        <img src="assets/logo.png" alt="Logo">
-        <h1>🎬 Clip à la une</h1>
-        <div class="button-container">
-            <a href="index.html" class="about-button">🏠 Retour à l'accueil</a>
-        </div>
+      <img src="assets/logo.png" alt="Logo" />
+      <h1>🎬 Clip à la une</h1>
+      <div class="button-container">
+        <a href="index.html" class="about-button">🏠 Retour à l'accueil</a>
+      </div>
     </header>
 
     <section id="clip-frame">
-        <iframe id="clip-player" src="" allowfullscreen></iframe>
-        <div id="clip-user"></div>
+      <iframe id="clip-player" src="" allowfullscreen></iframe>
+      <div id="clip-user"></div>
+      <div class="button-container">
+        <button id="prev-button">🎞️ Clip précédent</button>
         <button id="next-button">🎞️ Clip suivant</button>
+      </div>
     </section>
 
     <script src="clips.js"></script>
-</body>
+  </body>
 </html>

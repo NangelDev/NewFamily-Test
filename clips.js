@@ -1,8 +1,9 @@
 let clientId = "";
 let accessToken = "";
 let clipsQueue = [];
+let clipHistory = []; // Historique pour "précédent"
 
-// Mets ici le domaine Netlify exact utilisé pour tester
+// Mets ton domaine Netlify exact ici (ou celui du site original)
 const PARENT_DOMAIN = "newfamily-test.netlify.app";
 
 const members = [
@@ -95,6 +96,13 @@ async function prepareClips() {
   }
 }
 
+// === Affichage d'un clip spécifique ===
+function displayClip(id, user) {
+  const iframeSrc = `https://clips.twitch.tv/embed?clip=${id}&parent=${PARENT_DOMAIN}`;
+  document.getElementById("clip-player").src = iframeSrc;
+  document.getElementById("clip-user").textContent = `👤 ${user}`;
+}
+
 // === Affichage du prochain clip ===
 function displayNextClip() {
   if (clipsQueue.length === 0) {
@@ -105,16 +113,32 @@ function displayNextClip() {
   }
 
   const { id, user } = clipsQueue.shift();
-  const iframeSrc = `https://clips.twitch.tv/embed?clip=${id}&parent=${PARENT_DOMAIN}`;
-
-  document.getElementById("clip-player").src = iframeSrc;
-  document.getElementById("clip-user").textContent = `👤 ${user}`;
+  if (document.getElementById("clip-player").src) {
+    // Ajoute à l'historique si ce n'est pas le premier affichage
+    clipHistory.push({ id, user });
+  }
+  displayClip(id, user);
 }
 
-// === Écoute du bouton "Clip suivant" ===
+// === Affichage du clip précédent ===
+function displayPreviousClip() {
+  if (clipHistory.length < 2) {
+    // Moins de 2 = soit aucun clip avant, soit juste le premier affiché
+    return;
+  }
+  // Retire le clip actuel et prend le précédent
+  clipHistory.pop();
+  const { id, user } = clipHistory[clipHistory.length - 1];
+  displayClip(id, user);
+}
+
+// === Écoutes des boutons ===
 document.addEventListener("DOMContentLoaded", () => {
   const nextBtn = document.getElementById("next-button");
   if (nextBtn) nextBtn.addEventListener("click", displayNextClip);
+
+  const prevBtn = document.getElementById("prev-button");
+  if (prevBtn) prevBtn.addEventListener("click", displayPreviousClip);
 });
 
 // === Initialisation ===
