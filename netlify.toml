@@ -1,9 +1,9 @@
 [build]
   publish = "."
-  environment = { 
-    TWITCH_CLIENT_ID = "kc7d05tymbi6m6i1au75p9iv9ngfmr", 
+
+  [build.environment]
+    TWITCH_CLIENT_ID = "kc7d05tymbi6m6i1au75p9iv9ngfmr"
     TWITCH_CLIENT_SECRET = "5ob6aa0serpvdyhzoetia0w168xdp3"
-  }
 
 [functions]
   directory = "netlify/functions"
