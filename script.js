@@ -1,10 +1,11 @@
-const clientId = "rr75kdousbzbp8qfjy0xtppwpljuke";
+let clientId = "";
 let token = "";
 
 async function getToken() {
   const response = await fetch("/.netlify/functions/getTwitchData");
   const data = await response.json();
   token = data.access_token;
+  clientId = data.client_id;
 }
 
 async function fetchUserLists() {
@@ -133,6 +134,7 @@ async function init() {
           .replace("{height}", "180")
       : userInfo?.profile_image_url ||
         "https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_600x600.png";
+
     card.innerHTML = `
             <a href="${link}" target="_blank">
                 <img src="${img}" alt="Preview">
