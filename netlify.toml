@@ -1,8 +1,8 @@
 [build]
   publish = "."
   environment = { 
-    TWITCH_CLIENT_ID = "xxxx", 
-    TWITCH_CLIENT_SECRET = "yyyy"
+    TWITCH_CLIENT_ID = "kc7d05tymbi6m6i1au75p9iv9ngfmr", 
+    TWITCH_CLIENT_SECRET = "5ob6aa0serpvdyhzoetia0w168xdp3"
   }
 
 [functions]
