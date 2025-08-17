@@ -1,78 +1,155 @@
 <!DOCTYPE html>
 <html lang="fr">
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-FMSCPWEE4K"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
+  <!-- Google tag (gtag.js) -->
+  <script
+    async
+    src="https://www.googletagmanager.com/gtag/js?id=G-FMSCPWEE4K"
+  ></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-FMSCPWEE4K");
+  </script>
 
-  gtag('config', 'G-FMSCPWEE4K');
-</script>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Twitch Entraide - New Family</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Site de la communauté Twitch New Family : lives, clips, événements et plus !"
+    />
+    <link rel="stylesheet" href="style.css" />
 
-<head>
-  <meta charset="UTF-8">
-  <title>Twitch Entraide - New Family</title>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <header>
-    <img src="assets/logo.webp" alt="Logo Twitch Entraide New Family">
-    <h1>Bienvenue sur le site de la New Family !</h1>
-    <p>Retrouvez ici tous les lives de notre communauté bienveillante, passionnée et unie autour du partage !</p>
-  </header>
+    <!-- ✅ Chargement optimisé des polices système -->
+    <link rel="preload" as="image" href="assets/logo.webp" />
 
-  <!-- Boutons du haut -->
-  <div class="button-container">
-    <a href="a-propos.html" class="about-button">🎭 En savoir plus sur la New Family</a>
-  </div>
+    <!-- 🔗 Optimisation des connexions externes -->
+    <link rel="preconnect" href="https://api.twitch.tv" />
+    <link rel="preconnect" href="https://static-cdn.jtvnw.net" />
+    <link rel="preconnect" href="https://clips-media-assets2.twitch.tv" />
+    <link rel="preconnect" href="https://www.youtube.com" />
 
-  <div class="button-container">
-    <a href="vip.html" class="event-button">⭐ VIP du mois</a>
-    <a href="evenements.html" class="event-button">📅 Événements</a>
-    <a href="clips.html" class="event-button">📽️ Clips à découvrir</a>
-    <a href="interviews.html" class="event-button">🎤 Interviews</a>
-  </div> <!-- ✅ fermeture ajoutée ici ! -->
-</div>
+    <!-- ✅ Google Analytics (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-FMSCPWEE4K"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-FMSCPWEE4K");
+    </script>
+  </head>
 
-  <!-- Section NewFamily Aventura 2026 -->
-<section style="padding: 2rem 1rem; background: white; border-radius: 1rem; max-width: 900px; margin: 2rem auto; box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-align: center;">
-  <h2 style="font-size: 2rem; font-weight: bold; margin-bottom: 1rem;">🌴 NewFamily Aventura 2026</h2>
+  <body>
+    <header>
+      <img src="assets/logo.webp" alt="Logo Twitch Entraide New Family" />
+      <h1>Bienvenue sur le site de la New Family !</h1>
+      <p>
+        Retrouvez ici tous les lives de notre communauté bienveillante,
+        passionnée et unie autour du partage !
+      </p>
+    </header>
 
-  <p style="font-size: 1.2rem; margin-bottom: 2rem;">
-    Du 13 au 17 mai 2026, la communauté se retrouve pour un voyage exceptionnel à PortAventura ! 📈🏖️
-  </p>
+    <!-- 🔽 Section des lives (remontée pour le LCP) -->
+    <section id="online">
+      <h2>Actuellement en direct 🎥</h2>
+      <p
+        id="live-count"
+        style="text-align: center; font-weight: bold; font-size: 1.2em"
+      ></p>
+      <div id="live-users" class="user-grid"></div>
+    </section>
 
-  <div style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; border-radius: 1rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); max-width: 100%; margin: 0 auto 2rem;">
-    <iframe 
-      src="https://www.youtube.com/embed/WVgvUKb3-XQ"
-      title="Trailer NewFamily Aventura 2026"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowfullscreen
-      style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;">
-    </iframe>
-  </div>
+    <!-- Boutons -->
+    <div class="button-container">
+      <a href="a-propos.html" class="about-button"
+        >🎭 En savoir plus sur la New Family</a
+      >
+    </div>
 
-  <a href="aventura2026.html" class="event-button" style="padding: 0.8rem 1.5rem; font-weight: 600; background-color: #f44336; color: white; border-radius: 0.6rem; box-shadow: 0 4px 8px rgba(0,0,0,0.2); text-decoration: none;">
-    🏝️ En savoir plus sur New Family Aventura 2026
-  </a>
-</section>
+    <div class="button-container">
+      <a href="vip.html" class="event-button">⭐ VIP du mois</a>
+      <a href="evenements.html" class="event-button">📅 Événements</a>
+      <a href="clips.html" class="event-button">📽️ Clips à découvrir</a>
+      <a href="interviews.html" class="event-button">🎤 Interviews</a>
+    </div>
 
+    <!-- 🏝️ Section Aventura -->
+    <section
+      style="
+        padding: 2rem 1rem;
+        background: white;
+        border-radius: 1rem;
+        max-width: 900px;
+        margin: 2rem auto;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        text-align: center;
+      "
+    >
+      <h2 style="font-size: 2rem; font-weight: bold; margin-bottom: 1rem">
+        🌴 NewFamily Aventura 2026
+      </h2>
 
+      <p style="font-size: 1.2rem; margin-bottom: 2rem">
+        Du 13 au 17 mai 2026, la communauté se retrouve pour un voyage
+        exceptionnel à PortAventura ! 📈🏖️
+      </p>
 
-  <!-- 🔽 Section des lives -->
-  <section id="online">
-    <h2>Actuellement en direct 🎥</h2>
-    <p id="live-count" style="text-align: center; font-weight: bold; font-size: 1.2em;"></p>
-    <div id="live-users" class="user-grid"></div>
-  </section>
+      <div
+        style="
+          position: relative;
+          padding-bottom: 56.25%;
+          height: 0;
+          overflow: hidden;
+          border-radius: 1rem;
+          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+          max-width: 100%;
+          margin: 0 auto 2rem;
+        "
+      >
+        <iframe
+          src="https://www.youtube.com/embed/WVgvUKb3-XQ"
+          title="Trailer NewFamily Aventura 2026"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen
+          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
+        >
+        </iframe>
+      </div>
 
-  <section id="offline">
-    <h2>À découvrir bientôt 👀</h2>
-    <div id="offline-users" class="user-grid"></div>
-  </section>
+      <a
+        href="aventura2026.html"
+        class="event-button"
+        style="
+          padding: 0.8rem 1.5rem;
+          font-weight: 600;
+          background-color: #f44336;
+          color: white;
+          border-radius: 0.6rem;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+          text-decoration: none;
+        "
+      >
+        🏝️ En savoir plus sur New Family Aventura 2026
+      </a>
+    </section>
 
-  <script src="script.js"></script>
-</body>
+    <!-- 💤 Section offline -->
+    <section id="offline">
+      <h2>À découvrir bientôt 👀</h2>
+      <div id="offline-users" class="user-grid"></div>
+    </section>
+
+    <!-- JavaScript en defer -->
+    <script src="script.js" defer></script>
+  </body>
 </html>

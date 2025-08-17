@@ -17,7 +17,7 @@ header {
 
 header img {
   width: 250px;
-  height: auto; /* ✅ Fix CLS logo */
+  height: 140px; /* ✅ Fix CLS logo */
   max-width: 100%;
   margin-bottom: 5px;
   transition: transform 0.3s ease;
@@ -74,8 +74,7 @@ h2 {
 
 .user-card img {
   width: 100%;
-  height: auto;
-  max-height: 120px;
+  height: 120px; /* ✅ Fix CLS miniature */
   object-fit: cover;
 }
 
