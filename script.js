@@ -6,6 +6,10 @@ async function getToken() {
   const data = await response.json();
   token = data.access_token;
   clientId = data.client_id;
+
+  // Debug
+  console.log("📦 Token :", token);
+  console.log("📦 Client ID :", clientId);
 }
 
 async function fetchUserLists() {
@@ -26,7 +30,7 @@ async function fetchStreams(logins) {
     const response = await fetch(url, {
       headers: {
         "Client-ID": clientId,
-        Authorization: "Bearer " + token,
+        Authorization: `Bearer ${token}`,
       },
     });
 
@@ -55,7 +59,7 @@ async function fetchUsersInfo(allUsers) {
       const response = await fetch(url, {
         headers: {
           "Client-ID": clientId,
-          Authorization: "Bearer " + token,
+          Authorization: `Bearer ${token}`,
         },
       });
 
@@ -77,11 +81,16 @@ async function fetchUsersInfo(allUsers) {
 
 async function fetchVIPList() {
   const response = await fetch("vip.json");
-  return await response.json(); // liste des pseudos
+  return await response.json();
 }
 
 async function init() {
   await getToken();
+
+  if (!token || !clientId) {
+    console.error("❌ Token ou Client ID manquant !");
+    return;
+  }
 
   const allUsers = await fetchUserLists();
   const usersInfo = await fetchUsersInfo(allUsers);
@@ -99,7 +108,6 @@ async function init() {
   const offlineContainer = document.getElementById("offline-users");
   const onlineLogins = onlineUsers.map((user) => user.user_login.toLowerCase());
 
-  // Trier les utilisateurs : VIP d'abord
   const sortedUsers = [...allUsers].sort((a, b) => {
     const aIsVip = vipList.includes(a.toLowerCase());
     const bIsVip = vipList.includes(b.toLowerCase());
@@ -117,9 +125,7 @@ async function init() {
 
     const card = document.createElement("div");
     card.classList.add("user-card");
-    if (vipList.includes(user.toLowerCase())) {
-      card.classList.add("vip");
-    }
+    if (vipList.includes(user.toLowerCase())) card.classList.add("vip");
     if (!isOnline) card.classList.add("offline");
 
     const link = `https://twitch.tv/${user}`;
@@ -136,12 +142,12 @@ async function init() {
         "https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_600x600.png";
 
     card.innerHTML = `
-            <a href="${link}" target="_blank">
-                <img src="${img}" alt="Preview">
-                <div class="username">${user}</div>
-                <div class="title">${title}</div>
-            </a>
-        `;
+      <a href="${link}" target="_blank">
+        <img src="${img}" alt="Preview">
+        <div class="username">${user}</div>
+        <div class="title">${title}</div>
+      </a>
+    `;
 
     if (isOnline) {
       liveContainer.appendChild(card);
