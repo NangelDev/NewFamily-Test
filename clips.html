@@ -43,12 +43,17 @@
       .twitch-clip {
         position: relative;
         max-width: 720px;
+        aspect-ratio: 16 / 9;
+        width: 100%;
         margin: 1em auto;
         cursor: pointer;
+        background-color: #000; /* Empêche effet vide */
       }
 
       .twitch-clip img {
         width: 100%;
+        height: 100%;
+        object-fit: cover;
         border-radius: 10px;
         display: block;
       }
@@ -63,11 +68,16 @@
         text-shadow: 0 0 10px black;
         pointer-events: none;
       }
+
+      header img {
+        width: 250px;
+        height: auto;
+      }
     </style>
   </head>
   <body>
     <header>
-      <img src="assets/logo.webp" alt="Logo" />
+      <img src="assets/logo.webp" alt="Logo" width="250" height="140" />
       <h1>🎬 Clip à la une</h1>
       <div class="button-container">
         <a href="index.html" class="about-button">🏠 Retour à l'accueil</a>
@@ -75,7 +85,6 @@
     </header>
 
     <section id="clip-frame">
-      <!-- 📸 Miniature Twitch générée dynamiquement ici -->
       <div id="clip-player" class="twitch-clip"></div>
       <div id="clip-user"></div>
       <div class="button-container">
