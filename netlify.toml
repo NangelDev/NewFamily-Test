@@ -1,6 +1,12 @@
 [build]
-  publish = "public"
-  functions = "netlify/functions"
+  publish = "."
+  environment = { 
+    TWITCH_CLIENT_ID = "xxxx", 
+    TWITCH_CLIENT_SECRET = "yyyy"
+  }
+
+[functions]
+  directory = "netlify/functions"
 
 [[headers]]
   for = "/*.js"
