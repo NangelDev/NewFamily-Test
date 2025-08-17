@@ -12,20 +12,12 @@
         margin: 2em auto;
       }
 
-      iframe {
-        width: 720px;
-        height: 405px;
-        max-width: 90%;
-        border: none;
-      }
-
       #clip-user {
         font-size: 1.2em;
         margin: 0.5em 0;
         font-weight: bold;
       }
 
-      /* Style commun pour les deux boutons */
       #next-button,
       #prev-button {
         padding: 0.7em 1.5em;
@@ -35,7 +27,7 @@
         border: none;
         border-radius: 10px;
         cursor: pointer;
-        margin: 0 0.5em; /* espace horizontal entre les boutons */
+        margin: 0 0.5em;
       }
 
       #next-button:hover,
@@ -47,11 +39,35 @@
         margin-top: 1em;
         text-align: center;
       }
+
+      .twitch-clip {
+        position: relative;
+        max-width: 720px;
+        margin: 1em auto;
+        cursor: pointer;
+      }
+
+      .twitch-clip img {
+        width: 100%;
+        border-radius: 10px;
+        display: block;
+      }
+
+      .twitch-clip .play-button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 48px;
+        color: white;
+        text-shadow: 0 0 10px black;
+        pointer-events: none;
+      }
     </style>
   </head>
   <body>
     <header>
-      <img src="assets/logo.png" alt="Logo" />
+      <img src="assets/logo.webp" alt="Logo" />
       <h1>🎬 Clip à la une</h1>
       <div class="button-container">
         <a href="index.html" class="about-button">🏠 Retour à l'accueil</a>
@@ -59,7 +75,8 @@
     </header>
 
     <section id="clip-frame">
-      <iframe id="clip-player" src="" allowfullscreen></iframe>
+      <!-- 📸 Miniature Twitch générée dynamiquement ici -->
+      <div id="clip-player" class="twitch-clip"></div>
       <div id="clip-user"></div>
       <div class="button-container">
         <button id="prev-button">🎞️ Clip précédent</button>

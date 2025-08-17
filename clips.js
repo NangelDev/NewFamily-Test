@@ -1,9 +1,8 @@
 let clientId = "";
 let accessToken = "";
 let clipsQueue = [];
-let clipHistory = []; // Historique pour "précédent"
+let clipHistory = [];
 
-// Mets ton domaine Netlify exact ici (ou celui du site original)
 const PARENT_DOMAIN = "newfamily-test.netlify.app";
 
 const members = [
@@ -18,7 +17,7 @@ const members = [
   "Dylow95",
 ];
 
-// === Récupération du token + client_id depuis Netlify Function ===
+// === Récupération token + client_id depuis Netlify Function ===
 async function getToken() {
   const res = await fetch("/.netlify/functions/getTwitchData");
   if (!res.ok) {
@@ -28,13 +27,9 @@ async function getToken() {
   const data = await res.json();
   accessToken = data.access_token;
   clientId = data.client_id;
-
-  if (!accessToken || !clientId) {
-    console.error("Token ou client_id manquant");
-  }
 }
 
-// === Récupération de l'ID utilisateur ===
+// === Récupération de l'ID utilisateur Twitch ===
 async function getUserId(username) {
   const res = await fetch(
     `https://api.twitch.tv/helix/users?login=${encodeURIComponent(username)}`,
@@ -45,12 +40,7 @@ async function getUserId(username) {
       },
     }
   );
-
-  if (!res.ok) {
-    console.error(`getUserId(${username}) -> ${res.status}`);
-    return null;
-  }
-
+  if (!res.ok) return null;
   const data = await res.json();
   return data.data?.[0]?.id || null;
 }
@@ -66,22 +56,16 @@ async function getRandomClip(userId) {
       },
     }
   );
-
-  if (!res.ok) {
-    console.error(`getRandomClip(${userId}) -> ${res.status}`);
-    return null;
-  }
-
+  if (!res.ok) return null;
   const data = await res.json();
   const validClips = (data.data || []).filter(
     (clip) => clip.thumbnail_url && clip.id
   );
   if (validClips.length === 0) return null;
-
   return validClips[Math.floor(Math.random() * validClips.length)];
 }
 
-// === Préparation de la liste de clips ===
+// === Préparation des clips ===
 async function prepareClips() {
   for (const member of members) {
     const userId = await getUserId(member);
@@ -96,43 +80,63 @@ async function prepareClips() {
   }
 }
 
-// === Affichage d'un clip spécifique ===
+// === Affiche une miniature (remplace l'iframe) ===
 function displayClip(id, user) {
-  const iframeSrc = `https://clips.twitch.tv/embed?clip=${id}&parent=${PARENT_DOMAIN}`;
-  document.getElementById("clip-player").src = iframeSrc;
+  const clipPlayer = document.getElementById("clip-player");
+  if (!clipPlayer) return;
+
+  clipPlayer.innerHTML = `
+    <img src="https://clips-media-assets2.twitch.tv/${id}-preview-480x272.jpg" 
+         alt="Preview du clip"
+         loading="lazy"
+         onclick="loadTwitchClip(this, '${id}')"
+         style="width: 100%; border-radius: 10px; cursor: pointer;">
+    <div class="play-button">▶</div>
+  `;
+
   document.getElementById("clip-user").textContent = `👤 ${user}`;
+}
+
+// === Charge l'iframe Twitch dynamiquement ===
+function loadTwitchClip(element, clipId) {
+  const container = element.parentElement;
+  if (!container) return;
+
+  container.innerHTML = `
+    <iframe
+      src="https://clips.twitch.tv/embed?clip=${clipId}&parent=${PARENT_DOMAIN}"
+      width="100%"
+      height="405"
+      frameborder="0"
+      allowfullscreen
+      loading="lazy">
+    </iframe>
+  `;
 }
 
 // === Affichage du prochain clip ===
 function displayNextClip() {
   if (clipsQueue.length === 0) {
-    document.getElementById("clip-player").src = "";
+    document.getElementById("clip-player").innerHTML = "";
     document.getElementById("clip-user").textContent =
       "Aucun autre clip disponible.";
     return;
   }
 
   const { id, user } = clipsQueue.shift();
-  if (document.getElementById("clip-player").src) {
-    // Ajoute à l'historique si ce n'est pas le premier affichage
-    clipHistory.push({ id, user });
-  }
+  clipHistory.push({ id, user }); // Historique
   displayClip(id, user);
 }
 
 // === Affichage du clip précédent ===
 function displayPreviousClip() {
-  if (clipHistory.length < 2) {
-    // Moins de 2 = soit aucun clip avant, soit juste le premier affiché
-    return;
-  }
-  // Retire le clip actuel et prend le précédent
-  clipHistory.pop();
+  if (clipHistory.length < 2) return;
+  clipHistory.pop(); // Retire l’actuel
   const { id, user } = clipHistory[clipHistory.length - 1];
   displayClip(id, user);
 }
 
-// === Écoutes des boutons ===
+// === Événements DOM ===
 document.addEventListener("DOMContentLoaded", () => {
   const nextBtn = document.getElementById("next-button");
   if (nextBtn) nextBtn.addEventListener("click", displayNextClip);
@@ -141,12 +145,12 @@ document.addEventListener("DOMContentLoaded", () => {
   if (prevBtn) prevBtn.addEventListener("click", displayPreviousClip);
 });
 
-// === Initialisation ===
+// === Init ===
 (async () => {
   await getToken();
   if (!accessToken || !clientId) {
     document.getElementById("clip-user").textContent =
-      "Erreur d’authentification Twitch. Réessaie plus tard.";
+      "Erreur d’authentification Twitch.";
     return;
   }
   await prepareClips();
