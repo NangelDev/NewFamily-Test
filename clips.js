@@ -5,7 +5,7 @@ let accessToken = "";
 let clipsQueue = [];
 let currentIndex = -1;
 
-const PARENT_DOMAIN = "newfamily.netlify.app"; // OK
+const PARENT_DOMAIN = "newfamily-test.netlify.app"; // OK
 
 const members = [
   "nexou31",
