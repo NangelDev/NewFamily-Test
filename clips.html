@@ -3,93 +3,55 @@
   <head>
     <meta charset="UTF-8" />
     <title>Clips à la une</title>
-    <link rel="stylesheet" href="style.css" />
-    <style>
-      #clip-frame {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin: 2em auto;
-      }
-
-      #clip-user {
-        font-size: 1.2em;
-        margin: 0.5em 0;
-        font-weight: bold;
-      }
-
-      #next-button,
-      #prev-button {
-        padding: 0.7em 1.5em;
-        font-size: 1em;
-        background-color: #9146ff;
-        color: white;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-        margin: 0 0.5em;
-      }
-
-      #next-button:hover,
-      #prev-button:hover {
-        background-color: #772ce8;
-      }
-
-      .button-container {
-        margin-top: 1em;
-        text-align: center;
-      }
-
-      .twitch-clip {
-        position: relative;
-        max-width: 720px;
-        aspect-ratio: 16 / 9;
-        width: 100%;
-        margin: 1em auto;
-        cursor: pointer;
-        background-color: #000; /* Empêche effet vide */
-      }
-
-      .twitch-clip img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 10px;
-        display: block;
-      }
-
-      .twitch-clip .play-button {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 48px;
-        color: white;
-        text-shadow: 0 0 10px black;
-        pointer-events: none;
-      }
-
-      header img {
-        width: 250px;
-        height: auto;
-      }
-    </style>
+    <link rel="stylesheet" href="style-tailwind.css" />
   </head>
-  <body>
-    <header>
-      <img src="assets/logo.webp" alt="Logo" width="250" height="140" />
-      <h1>🎬 Clip à la une</h1>
-      <div class="button-container">
-        <a href="index.html" class="about-button">🏠 Retour à l'accueil</a>
+
+  <body class="m-0 font-sans bg-fond">
+    <!-- HEADER -->
+    <header
+      class="bg-gradient-to-br from-brandStart to-brandEnd text-white text-center px-4 py-8 rounded-b-[30px] shadow-lg"
+    >
+      <img
+        src="assets/logo.webp"
+        alt="Logo"
+        class="w-[250px] h-[140px] max-w-full mb-1 transition-transform duration-300 hover:scale-105 mx-auto"
+      />
+      <h1 class="text-[2.8em] mt-[0.3em] mb-[0.4em]">🎬 Clip à la une</h1>
+      <div class="mt-4">
+        <a
+          href="index.html"
+          class="inline-block bg-rouge text-white px-4 py-3 rounded-lg font-bold shadow-md hover:bg-violet hover:scale-105 transition"
+        >
+          🏠 Retour à l'accueil
+        </a>
       </div>
     </header>
 
-    <section id="clip-frame">
-      <div id="clip-player" class="twitch-clip"></div>
-      <div id="clip-user"></div>
-      <div class="button-container">
-        <button id="prev-button">🎞️ Clip précédent</button>
-        <button id="next-button">🎞️ Clip suivant</button>
+    <!-- SECTION CLIP -->
+    <section id="clip-frame" class="flex flex-col items-center my-8">
+      <!-- Player -->
+      <div
+        id="clip-player"
+        class="relative max-w-[720px] aspect-video w-full mx-auto my-4 cursor-pointer bg-black rounded-lg overflow-hidden"
+      ></div>
+
+      <!-- User -->
+      <div id="clip-user" class="text-lg font-bold my-2 text-center"></div>
+
+      <!-- Boutons -->
+      <div class="mt-4 text-center">
+        <button
+          id="prev-button"
+          class="px-6 py-2 text-white bg-twitch rounded-lg cursor-pointer hover:bg-twitchH transition"
+        >
+          🎞️ Clip précédent
+        </button>
+        <button
+          id="next-button"
+          class="px-6 py-2 text-white bg-twitch rounded-lg cursor-pointer hover:bg-twitchH transition"
+        >
+          🎞️ Clip suivant
+        </button>
       </div>
     </section>
 

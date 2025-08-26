@@ -1,35 +1,48 @@
 <!DOCTYPE html>
 <html lang="fr">
-  <!-- Google tag (gtag.js) -->
-  <script
-    async
-    src="https://www.googletagmanager.com/gtag/js?id=G-FMSCPWEE4K"
-  ></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag() {
-      dataLayer.push(arguments);
-    }
-    gtag("js", new Date());
-    gtag("config", "G-FMSCPWEE4K");
-  </script>
-
   <head>
     <meta charset="UTF-8" />
     <title>Twitch Entraide - New Family</title>
+
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-FMSCPWEE4K"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+      gtag("config", "G-FMSCPWEE4K");
+    </script>
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="style-tailwind.css" />
+    <!-- Optionnel tant que tout n'est pas migré -->
     <link rel="stylesheet" href="style.css" />
 
-    <!-- 🔗 Optimisation des connexions externes -->
+    <!-- Optimisation des connexions externes -->
     <link rel="preconnect" href="https://api.twitch.tv" />
     <link rel="preconnect" href="https://static-cdn.jtvnw.net" />
     <link rel="preconnect" href="https://clips-media-assets2.twitch.tv" />
     <link rel="preconnect" href="https://www.youtube.com" />
   </head>
 
-  <body>
-    <header>
-      <img src="assets/logo.webp" alt="Logo Twitch Entraide New Family" />
-      <h1>Bienvenue sur le site de la New Family !</h1>
+  <body class="m-0 font-sans bg-fond">
+    <!-- Header -->
+    <header
+      class="bg-gradient-to-br from-brandStart to-brandEnd text-white text-center px-4 py-8 rounded-b-[30px] shadow-lg"
+    >
+      <img
+        src="assets/logo.webp"
+        alt="Logo Twitch Entraide New Family"
+        class="w-[250px] h-[140px] max-w-full mb-1 transition-transform duration-300 hover:scale-105"
+      />
+      <h1 class="text-[2.8em] mt-[0.3em] mb-[0.4em]">
+        Bienvenue sur le site de la New Family !
+      </h1>
       <p>
         Retrouvez ici tous les lives de notre communauté bienveillante,
         passionnée et unie autour du partage !
@@ -37,51 +50,55 @@
     </header>
 
     <!-- Boutons du haut -->
-    <div class="button-container">
-      <a href="a-propos.html" class="about-button"
-        >🎭 En savoir plus sur la New Family</a
+    <div class="flex justify-center mt-4">
+      <a
+        href="a-propos.html"
+        class="inline-block bg-rouge text-white px-4 py-3 rounded-lg font-bold shadow-md hover:bg-violet hover:scale-105 transition"
       >
+        🎭 En savoir plus sur la New Family
+      </a>
     </div>
 
-    <div class="button-container">
-      <a href="vip.html" class="event-button">⭐ VIP du mois</a>
-      <a href="evenements.html" class="event-button">📅 Événements</a>
-      <a href="clips.html" class="event-button">📽️ Clips à découvrir</a>
-      <a href="interviews.html" class="event-button">🎤 Interviews</a>
+    <div class="flex justify-center gap-4 mt-4 flex-wrap">
+      <a
+        href="vip.html"
+        class="inline-block bg-rouge text-white px-4 py-3 rounded-lg font-bold shadow-md hover:bg-violet hover:scale-105 transition"
+      >
+        ⭐ VIP du mois
+      </a>
+      <a
+        href="evenements.html"
+        class="inline-block bg-rouge text-white px-4 py-3 rounded-lg font-bold shadow-md hover:bg-violet hover:scale-105 transition"
+      >
+        📅 Événements
+      </a>
+      <a
+        href="clips.html"
+        class="inline-block bg-rouge text-white px-4 py-3 rounded-lg font-bold shadow-md hover:bg-violet hover:scale-105 transition"
+      >
+        📽️ Clips à découvrir
+      </a>
+      <a
+        href="interviews.html"
+        class="inline-block bg-rouge text-white px-4 py-3 rounded-lg font-bold shadow-md hover:bg-violet hover:scale-105 transition"
+      >
+        🎤 Interviews
+      </a>
     </div>
 
     <!-- Section NewFamily Aventura 2026 -->
     <section
-      style="
-        padding: 2rem 1rem;
-        background: white;
-        border-radius: 1rem;
-        max-width: 900px;
-        margin: 2rem auto;
-        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        text-align: center;
-      "
+      class="p-8 bg-white rounded-xl max-w-[900px] mx-auto my-8 shadow-[0_10px_20px_rgba(0,0,0,0.1)] text-center"
     >
-      <h2 style="font-size: 2rem; font-weight: bold; margin-bottom: 1rem">
-        🌴 NewFamily Aventura 2026
-      </h2>
+      <h2 class="text-[2rem] font-bold mb-4">🌴 NewFamily Aventura 2026</h2>
 
-      <p style="font-size: 1.2rem; margin-bottom: 2rem">
+      <p class="text-[1.2rem] mb-8">
         Du 13 au 17 mai 2026, la communauté se retrouve pour un voyage
         exceptionnel à PortAventura ! 📈🏖️
       </p>
 
       <div
-        style="
-          position: relative;
-          padding-bottom: 56.25%;
-          height: 0;
-          overflow: hidden;
-          border-radius: 1rem;
-          box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-          max-width: 100%;
-          margin: 0 auto 2rem;
-        "
+        class="relative pb-[56.25%] h-0 overflow-hidden rounded-xl shadow-[0_10px_20px_rgba(0,0,0,0.2)] max-w-full mx-auto mb-8"
       >
         <iframe
           src="https://www.youtube.com/embed/WVgvUKb3-XQ"
@@ -89,43 +106,38 @@
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
-          style="position: absolute; top: 0; left: 0; width: 100%; height: 100%"
-        >
-        </iframe>
+          class="absolute top-0 left-0 w-full h-full"
+        ></iframe>
       </div>
 
       <a
         href="aventura2026.html"
-        class="event-button"
-        style="
-          padding: 0.8rem 1.5rem;
-          font-weight: 600;
-          background-color: #f44336;
-          color: white;
-          border-radius: 0.6rem;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-          text-decoration: none;
-        "
+        class="inline-block px-6 py-3 font-semibold bg-rougeBtn text-white rounded-lg shadow-md no-underline"
       >
         🏝️ En savoir plus sur New Family Aventura 2026
       </a>
     </section>
 
-    <!-- 🔽 Section des lives (déplacée ici à la fin) -->
+    <!-- Lives -->
     <section id="online">
-      <h2>Actuellement en direct 🎥</h2>
-      <p
-        id="live-count"
-        style="text-align: center; font-weight: bold; font-size: 1.2em"
-      ></p>
-      <div id="live-users" class="user-grid"></div>
+      <h2 class="text-center mt-8">Actuellement en direct 🎥</h2>
+      <p id="live-count" class="text-center font-bold text-[1.2em]"></p>
+      <div
+        id="live-users"
+        class="flex flex-wrap justify-center gap-4 p-4"
+      ></div>
     </section>
 
     <section id="offline">
-      <h2>À découvrir bientôt 👀</h2>
-      <div id="offline-users" class="user-grid"></div>
+      <h2 class="text-center mt-8">À découvrir bientôt 👀</h2>
+      <div
+        id="offline-users"
+        class="flex flex-wrap justify-center gap-4 p-4"
+      ></div>
     </section>
 
+    <!-- Scripts -->
     <script src="script.js"></script>
+    <!-- NE PAS charger clip.js ici -->
   </body>
 </html>

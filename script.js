@@ -1,170 +1,182 @@
-let clientId = "";
-let token = "";
+// script.js — version 100% Tailwind
+const CLIENT_ID = "rr75kdousbzbp8qfjy0xtppwpljuke";
+const NETLIFY_FN = "/.netlify/functions/getTwitchData";
 
 async function getToken() {
-  const response = await fetch("/.netlify/functions/getTwitchData");
-  const data = await response.json();
-  token = data.access_token;
-  clientId = data.client_id;
-
-  // Debug
-  console.log("📦 Token :", token);
-  console.log("📦 Client ID :", clientId);
+  const res = await fetch(NETLIFY_FN, { cache: "no-store" });
+  if (!res.ok) throw new Error("Netlify function KO");
+  const data = await res.json();
+  if (!data?.access_token) throw new Error("Pas de token reçu");
+  return data.access_token;
 }
 
 async function fetchUserLists() {
-  const [res1, res2] = await Promise.all([
-    fetch("users1.json"),
-    fetch("users2.json"),
+  const [r1, r2] = await Promise.all([
+    fetch("users1.json", { cache: "no-store" }),
+    fetch("users2.json", { cache: "no-store" }),
   ]);
-  const users1 = await res1.json();
-  const users2 = await res2.json();
-  return [...users1, ...users2];
-}
-
-async function fetchStreams(logins) {
-  const query = logins.map((user) => `user_login=${user}`).join("&");
-  const url = `https://api.twitch.tv/helix/streams?${query}`;
-
-  try {
-    const response = await fetch(url, {
-      headers: {
-        "Client-ID": clientId,
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    if (!response.ok) {
-      console.warn(`⚠️ fetchStreams a échoué avec le code ${response.status}`);
-      return { data: [] };
-    }
-
-    return await response.json();
-  } catch (error) {
-    console.error("❌ Erreur dans fetchStreams :", error);
-    return { data: [] };
-  }
-}
-
-async function fetchUsersInfo(allUsers) {
-  const results = [];
-  const erreurs = [];
-
-  for (let i = 0; i < allUsers.length; i += 100) {
-    const chunk = allUsers.slice(i, i + 100);
-    const query = chunk.map((user) => `login=${user}`).join("&");
-    const url = `https://api.twitch.tv/helix/users?${query}`;
-
-    try {
-      const response = await fetch(url, {
-        headers: {
-          "Client-ID": clientId,
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      if (!response.ok) throw new Error(`Erreur pour : ${chunk.join(", ")}`);
-      const data = await response.json();
-      results.push(...data.data);
-    } catch (error) {
-      console.warn("❌ Utilisateurs ignorés :", chunk, "-", error.message);
-      erreurs.push(...chunk);
-    }
-  }
-
-  if (erreurs.length > 0) {
-    console.log("⚠️ Logins invalides détectés :", erreurs);
-  }
-
-  return results;
+  const u1 = r1.ok ? await r1.json() : [];
+  const u2 = r2.ok ? await r2.json() : [];
+  return [...u1, ...u2].map((u) => String(u).trim()).filter(Boolean);
 }
 
 async function fetchVIPList() {
-  const response = await fetch("vip.json");
-  return await response.json();
+  try {
+    const res = await fetch("vip.json", { cache: "no-store" });
+    if (!res.ok) return [];
+    const list = await res.json();
+    return (list || []).map((u) => String(u).trim()).filter(Boolean);
+  } catch {
+    return [];
+  }
+}
+
+async function fetchUsersInfo(allUsers, token) {
+  const results = [];
+  for (let i = 0; i < allUsers.length; i += 100) {
+    const chunk = allUsers.slice(i, i + 100);
+    const query = chunk.map((u) => `login=${encodeURIComponent(u)}`).join("&");
+    const url = `https://api.twitch.tv/helix/users?${query}`;
+    try {
+      const res = await fetch(url, {
+        headers: { "Client-ID": CLIENT_ID, Authorization: "Bearer " + token },
+      });
+      if (!res.ok) continue;
+      const json = await res.json();
+      results.push(...(json?.data || []));
+    } catch {}
+  }
+  return results;
+}
+
+async function fetchAllStreams(allUsers, token) {
+  const all = [];
+  for (let i = 0; i < allUsers.length; i += 100) {
+    const chunk = allUsers.slice(i, i + 100);
+    const query = chunk
+      .map((u) => `user_login=${encodeURIComponent(u)}`)
+      .join("&");
+    const url = `https://api.twitch.tv/helix/streams?${query}`;
+    try {
+      const res = await fetch(url, {
+        headers: { "Client-ID": CLIENT_ID, Authorization: "Bearer " + token },
+      });
+      if (!res.ok) continue;
+      const json = await res.json();
+      all.push(...(json?.data || []));
+    } catch {}
+  }
+  return all;
+}
+
+function makeCardHTML({ login, display, img, title, isOnline, isVip }) {
+  const base =
+    "w-[180px] p-4 m-2 bg-white rounded-xl text-center shadow-md transition " +
+    "hover:-translate-y-1 hover:bg-rosePale hover:shadow-violet/50";
+  const offline = isOnline ? "" : " grayscale opacity-75";
+  const vipBadge = isVip
+    ? `<div class="text-[0.9em] font-bold text-or mb-1">⭐ VIP</div>`
+    : "";
+
+  return `
+    <div class="${base}${offline}">
+      ${vipBadge}
+      <a href="https://twitch.tv/${login}" target="_blank" rel="noopener">
+        <img src="${img}" alt="${display}" class="w-full h-[120px] object-cover rounded">
+        <div class="font-bold text-[1.1em] text-rouge mt-2">${display}</div>
+        <div class="text-[0.9em] text-gris444 mt-2 leading-6 text-center">${title}</div>
+      </a>
+    </div>
+  `;
 }
 
 async function init() {
-  await getToken();
-
-  if (!token || !clientId) {
-    console.error("❌ Token ou Client ID manquant !");
-    return;
-  }
-
-  const allUsers = await fetchUserLists();
-  const usersInfo = await fetchUsersInfo(allUsers);
-  const vipList = await fetchVIPList();
-
-  const streamChunks = [allUsers.slice(0, 100), allUsers.slice(100)];
-  const onlineUsers = [];
-
-  for (const group of streamChunks) {
-    const data = await fetchStreams(group);
-    onlineUsers.push(...data.data);
-  }
-
   const liveContainer = document.getElementById("live-users");
   const offlineContainer = document.getElementById("offline-users");
-  const onlineLogins = onlineUsers.map((user) => user.user_login.toLowerCase());
+  const liveCountEl = document.getElementById("live-count");
 
-  const sortedUsers = [...allUsers].sort((a, b) => {
-    const aIsVip = vipList.includes(a.toLowerCase());
-    const bIsVip = vipList.includes(b.toLowerCase());
-    return aIsVip === bIsVip ? 0 : aIsVip ? -1 : 1;
-  });
+  if (!liveContainer || !offlineContainer) return;
 
-  for (const user of sortedUsers) {
-    const isOnline = onlineLogins.includes(user.toLowerCase());
-    const streamData = onlineUsers.find(
-      (u) => u.user_login.toLowerCase() === user.toLowerCase()
+  try {
+    const token = await getToken();
+    const allUsers = await fetchUserLists(); // logins bruts
+    const vipList = (await fetchVIPList()).map((v) => v.toLowerCase());
+
+    // infos profil & streams
+    const [usersInfo, streams] = await Promise.all([
+      fetchUsersInfo(allUsers, token),
+      fetchAllStreams(allUsers, token),
+    ]);
+
+    // index pour lookup rapide
+    const infoByLogin = new Map(
+      usersInfo.map((u) => [u.login.toLowerCase(), u])
     );
-    const userInfo = usersInfo.find(
-      (u) => u.login.toLowerCase() === user.toLowerCase()
+    const streamsByLogin = new Map(
+      streams.map((s) => [s.user_login.toLowerCase(), s])
     );
 
-    const card = document.createElement("div");
-    card.classList.add("user-card");
-    if (vipList.includes(user.toLowerCase())) card.classList.add("vip");
-    if (!isOnline) card.classList.add("offline");
+    // tri : VIP en premier
+    const sorted = [...allUsers].sort((a, b) => {
+      const av = vipList.includes(a.toLowerCase());
+      const bv = vipList.includes(b.toLowerCase());
+      return av === bv ? 0 : av ? -1 : 1;
+    });
 
-    const link = `https://twitch.tv/${user}`;
-    const game = isOnline ? streamData.game_name : "";
-    const title = isOnline
-      ? `<strong>Venez soutenir</strong> ce membre de la <strong>New Family</strong> qui joue actuellement à <em>${game}</em>.`
-      : "Hors ligne";
+    let onlineCount = 0;
 
-    const img = isOnline
-      ? streamData.thumbnail_url
-          .replace("{width}", "320")
-          .replace("{height}", "180")
-      : userInfo?.profile_image_url ||
-        "https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_600x600.png";
+    for (const loginRaw of sorted) {
+      const login = loginRaw.toLowerCase();
+      const info = infoByLogin.get(login);
+      const stream = streamsByLogin.get(login);
 
-    card.innerHTML = `
-      <a href="${link}" target="_blank">
-        <img src="${img}" alt="Preview">
-        <div class="username">${user}</div>
-        <div class="title">${title}</div>
-      </a>
-    `;
+      const display = info?.display_name || loginRaw;
+      const isOnline = Boolean(stream);
+      const isVip = vipList.includes(login);
 
-    if (isOnline) {
-      liveContainer.appendChild(card);
-    } else {
-      offlineContainer.appendChild(card);
+      const img = isOnline
+        ? stream.thumbnail_url
+            .replace("{width}", "320")
+            .replace("{height}", "180")
+        : info?.profile_image_url ||
+          "https://static-cdn.jtvnw.net/jtv_user_pictures/xarth/404_user_600x600.png";
+
+      const title = isOnline
+        ? `<strong>Venez soutenir</strong> ce membre de la <strong>New Family</strong> qui joue actuellement à <em>${stream.game_name}</em>.`
+        : "Hors ligne";
+
+      const cardHTML = makeCardHTML({
+        login,
+        display,
+        img,
+        title,
+        isOnline,
+        isVip,
+      });
+
+      if (isOnline) {
+        onlineCount++;
+        liveContainer.insertAdjacentHTML("beforeend", cardHTML);
+      } else {
+        offlineContainer.insertAdjacentHTML("beforeend", cardHTML);
+      }
+    }
+
+    // compteur
+    const emoji = onlineCount === 0 ? "😴" : onlineCount > 20 ? "🔥" : "✨";
+    if (liveCountEl) {
+      liveCountEl.textContent = `${emoji} ${onlineCount} membre${
+        onlineCount > 1 ? "s" : ""
+      } de la New Family ${
+        onlineCount > 1 ? "sont" : "est"
+      } actuellement en live`;
+    }
+  } catch (e) {
+    console.error("❌ init:", e);
+    if (liveCountEl) {
+      liveCountEl.textContent = "Erreur de chargement. Réessayez plus tard.";
     }
   }
-
-  const liveCountElement = document.getElementById("live-count");
-  const emoji =
-    onlineUsers.length === 0 ? "😴" : onlineUsers.length > 20 ? "🔥" : "✨";
-
-  liveCountElement.textContent = `${emoji} ${onlineUsers.length} membre${
-    onlineUsers.length > 1 ? "s" : ""
-  } de la New Family ${
-    onlineUsers.length > 1 ? "sont" : "est"
-  } actuellement en live`;
 }
 
-init();
+document.addEventListener("DOMContentLoaded", init);

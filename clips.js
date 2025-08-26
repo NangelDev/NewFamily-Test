@@ -1,23 +1,25 @@
-let clientId = "";
+console.log("✅ clip.js chargé");
+
+const clientId = "rr75kdousbzbp8qfjy0xtppwpljuke"; // OK
 let accessToken = "";
 let clipsQueue = [];
-let clipHistory = [];
+let currentIndex = -1;
 
-const PARENT_DOMAIN = "newfamily-test.netlify.app";
+const PARENT_DOMAIN = "newfamily.netlify.app"; // OK
 
 const members = [
-  "Nexou31",
-  "Clarastonewall",
-  "Red_shadow_31",
-  "Selena_Akemi",
-  "Thony1384",
-  "Jenny31200",
-  "Vektor_live",
-  "Livio_on",
-  "Dylow95",
+  "nexou31",
+  "clarastonewall",
+  "red_shadow_31",
+  "selena_akemi",
+  "thony1384",
+  "jenny31200",
+  "vektor_live",
+  "livio_on",
+  "dylow95",
 ];
 
-// === Récupération token + client_id depuis Netlify Function ===
+// --- Token via Netlify Function ---
 async function getToken() {
   const res = await fetch("/.netlify/functions/getTwitchData");
   if (!res.ok) {
@@ -26,13 +28,13 @@ async function getToken() {
   }
   const data = await res.json();
   accessToken = data.access_token;
-  clientId = data.client_id;
 }
 
-// === Récupération de l'ID utilisateur Twitch ===
+// --- User ID ---
 async function getUserId(username) {
+  const login = username.toLowerCase();
   const res = await fetch(
-    `https://api.twitch.tv/helix/users?login=${encodeURIComponent(username)}`,
+    `https://api.twitch.tv/helix/users?login=${encodeURIComponent(login)}`,
     {
       headers: {
         "Client-ID": clientId,
@@ -45,7 +47,7 @@ async function getUserId(username) {
   return data.data?.[0]?.id || null;
 }
 
-// === Récupération d'un clip aléatoire ===
+// --- Clip aléatoire ---
 async function getRandomClip(userId) {
   const res = await fetch(
     `https://api.twitch.tv/helix/clips?broadcaster_id=${userId}&first=10`,
@@ -62,42 +64,52 @@ async function getRandomClip(userId) {
     (clip) => clip.thumbnail_url && clip.id
   );
   if (validClips.length === 0) return null;
-  return validClips[Math.floor(Math.random() * validClips.length)];
+
+  const chosen = validClips[Math.floor(Math.random() * validClips.length)];
+  // Remplace {width}/{height} pour l’aperçu
+  const thumb = chosen.thumbnail_url
+    .replace("{width}", "480")
+    .replace("{height}", "272");
+
+  return { id: chosen.id, thumbnail: thumb };
 }
 
-// === Préparation des clips ===
+// --- Prépare la file de clips ---
 async function prepareClips() {
   for (const member of members) {
     const userId = await getUserId(member);
     if (!userId) continue;
     const clip = await getRandomClip(userId);
     if (clip) {
-      clipsQueue.push({
-        id: clip.id,
-        user: member,
-      });
+      clipsQueue.push({ ...clip, user: member });
     }
   }
 }
 
-// === Affiche une miniature (remplace l'iframe) ===
-function displayClip(id, user) {
+// --- Affiche la miniature ---
+function displayClip(index) {
+  const clip = clipsQueue[index];
+  if (!clip) return;
+
   const clipPlayer = document.getElementById("clip-player");
   if (!clipPlayer) return;
 
   clipPlayer.innerHTML = `
-    <img src="https://clips-media-assets2.twitch.tv/${id}-preview-480x272.jpg" 
-         alt="Preview du clip"
-         loading="lazy"
-         onclick="loadTwitchClip(this, '${id}')"
-         style="width: 100%; border-radius: 10px; cursor: pointer;">
-    <div class="play-button">▶</div>
+    <img
+      src="${clip.thumbnail}"
+      alt="Preview du clip"
+      loading="lazy"
+      onclick="loadTwitchClip(this, '${clip.id}')"
+      class="w-full rounded-lg cursor-pointer block"
+    />
+    <div class="absolute inset-0 flex items-center justify-center text-white text-5xl drop-shadow pointer-events-none">▶</div>
   `;
 
-  document.getElementById("clip-user").textContent = `👤 ${user}`;
+  const userEl = document.getElementById("clip-user");
+  if (userEl) userEl.textContent = `👤 ${clip.user}`;
 }
 
-// === Charge l'iframe Twitch dynamiquement ===
+// --- Charge l'iframe Twitch ---
 function loadTwitchClip(element, clipId) {
   const container = element.parentElement;
   if (!container) return;
@@ -109,34 +121,30 @@ function loadTwitchClip(element, clipId) {
       height="405"
       frameborder="0"
       allowfullscreen
-      loading="lazy">
-    </iframe>
+      loading="lazy"
+    ></iframe>
   `;
 }
 
-// === Affichage du prochain clip ===
+// --- Navigation ---
 function displayNextClip() {
-  if (clipsQueue.length === 0) {
-    document.getElementById("clip-player").innerHTML = "";
-    document.getElementById("clip-user").textContent =
-      "Aucun autre clip disponible.";
-    return;
+  if (currentIndex < clipsQueue.length - 1) {
+    currentIndex++;
+    displayClip(currentIndex);
+  } else {
+    const userEl = document.getElementById("clip-user");
+    if (userEl) userEl.textContent = "🚫 Aucun autre clip disponible.";
   }
-
-  const { id, user } = clipsQueue.shift();
-  clipHistory.push({ id, user }); // Historique
-  displayClip(id, user);
 }
 
-// === Affichage du clip précédent ===
 function displayPreviousClip() {
-  if (clipHistory.length < 2) return;
-  clipHistory.pop(); // Retire l’actuel
-  const { id, user } = clipHistory[clipHistory.length - 1];
-  displayClip(id, user);
+  if (currentIndex > 0) {
+    currentIndex--;
+    displayClip(currentIndex);
+  }
 }
 
-// === Événements DOM ===
+// --- DOM events ---
 document.addEventListener("DOMContentLoaded", () => {
   const nextBtn = document.getElementById("next-button");
   if (nextBtn) nextBtn.addEventListener("click", displayNextClip);
@@ -145,14 +153,23 @@ document.addEventListener("DOMContentLoaded", () => {
   if (prevBtn) prevBtn.addEventListener("click", displayPreviousClip);
 });
 
-// === Init ===
+// --- Init ---
 (async () => {
   await getToken();
-  if (!accessToken || !clientId) {
-    document.getElementById("clip-user").textContent =
-      "Erreur d’authentification Twitch.";
+  if (!accessToken) {
+    const userEl = document.getElementById("clip-user");
+    if (userEl) userEl.textContent = "Erreur d’authentification Twitch.";
     return;
   }
   await prepareClips();
+
+  if (clipsQueue.length === 0) {
+    const player = document.getElementById("clip-player");
+    const userEl = document.getElementById("clip-user");
+    if (player) player.innerHTML = "";
+    if (userEl) userEl.textContent = "Aucun clip trouvé pour le moment.";
+    return;
+  }
+
   displayNextClip();
 })();

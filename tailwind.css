@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .user-grid {
+    @apply flex flex-wrap justify-center gap-4 p-4;
+  }
+
+  .user-card {
+    @apply w-[180px] p-4 m-2 bg-white rounded-xl text-center shadow-md transition hover:-translate-y-1 hover:bg-rosePale hover:shadow-violet/50;
+  }
+
+  .user-card.offline {
+    @apply grayscale opacity-75;
+  }
+
+  .username {
+    @apply font-bold text-[1.1em] text-rouge mt-2;
+  }
+
+  .title {
+    @apply text-[0.9em] text-gris444 mt-2 leading-6 text-center;
+  }
+
+  /* Boutons génériques */
+  .about-button,
+  .event-button {
+    @apply inline-block bg-rouge text-white px-4 py-3 rounded-lg font-bold shadow-md hover:bg-violet hover:scale-105 transition;
+  }
+
+  /* Bouton Interviews */
+  .interview-button {
+    @apply inline-block bg-interview text-white px-4 py-3 rounded-lg font-bold shadow-md hover:bg-interviewH hover:scale-105 transition;
+  }
+}
